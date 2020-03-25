@@ -21,7 +21,7 @@
 ### Tipos de queries:
 
 - **Driver**: SELECT \* FROM users
-- **Query** Builder: table('users').select().where() -> KNEX
+- **Query Builder**: table('users').select().where() -> KNEX
 
 # App
 
@@ -48,14 +48,16 @@
 </br>
 
 - **Configurações Knex.js**
-  <sup>Dica: NPX: executar; NPM: instalar</sup>
-  <sup>Dica²: Pode utilizar tanto npx como yarn</sup>
 
   - **Iniciar**: `yarn knex init`
   - **Migrations**:
+
     1. Definir o diretório responsável pelo armazenamento das migrations no arquivo `knexfile.js`;
     2. Executar `yarn knex migrate:make nome_da_migration` para criar a migration;
     3. Definir estrutura da migration no arquivo gerado dentro da pasta migrations;
     4. Executar `yarn knex migrate:latest` para executar a ultima migration;
-    5. Se deseja desfazer a ultima migration, executar `yarn knex migrate:rollback`.
-       <sup>Dica: executar "yarn knex" para listar seus comandos</sup>
+    5. Se deseja desfazer a ultima migration, executar `yarn knex migrate:rollback`. <br/>
+
+       <sup>Dica: NPX: executar; NPM: instalar</sup><br/>
+       <sup>Dica²: Pode utilizar tanto npx como yarn</sup><br/>
+       <sup>Dica³: executar "yarn knex" para listar seus comandos</sup><br/>
