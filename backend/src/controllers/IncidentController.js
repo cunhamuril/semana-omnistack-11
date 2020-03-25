@@ -2,7 +2,31 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
-    const incidents = await connection("incidents").select("*");
+    // page = 1: definindo padrão -> se não existir o param page, vai retonar por padrão a página 1
+    const { page = 1 } = req.query;
+
+    // [count] é a mesma coisa que count[0]
+    const [count] = await connection("incidents").count();
+
+    const incidents = await connection("incidents")
+      .join("ongs", "ongs.id", "=", "incidents.ong_id")
+      .limit(5)
+      /**
+       * (page - 1 = 0) * 5 = 0 -> primeiros 5 registros
+       * 1 * 5 = 5 -> a partir do 5o registro
+       * 2 * 5 = 10 -> a partir do 10o registro e poraí vai...
+       */
+      .offset((page - 1) * 5)
+      .select([
+        "incidents.*",
+        "ongs.name AS ong_name",
+        "ongs.whatsapp",
+        "ongs.city",
+        "ongs.uf"
+      ]);
+
+    // Cabeçalho da resposta que vai retornar a quantidade de incidents existente na table
+    res.header("X-Total-Count", count["count(*)"]);
 
     return res.json(incidents);
   },
