@@ -28,11 +28,11 @@ export default function Register() {
         <form>
           <input placeholder="Nome do ONG" required />
           <input type="email" placeholder="E-mail" required />
-          <input placeholder="Whatsapp" />
+          <input placeholder="Whatsapp" required />
 
           <div className="input-group">
-            <input placeholder="Cidade" />
-            <input placeholder="UF" style={{ width: 80 }} />
+            <input placeholder="Cidade" required />
+            <input placeholder="UF" style={{ width: 80 }} required />
           </div>
 
           <button className="button" type="submit">
