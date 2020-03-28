@@ -1,6 +1,6 @@
 import React from "react";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
 import * as MailComposer from "expo-mail-composer";
 
@@ -10,8 +10,14 @@ import styles from "./styles";
 
 export default function Detail() {
   const navigation = useNavigation();
-  const message =
-    'Olá, APAD, estou entrando em contato pois gostaria de ajudar no caso "Cadelinha atropelada" com o valor de R$ 120,00';
+  const route = useRoute();
+
+  const incident = route.params.incident; // Pegar dados da página anterior
+  const formattedValue = Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  }).format(incident.value);
+  const message = `Olá, ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${formattedValue}`;
 
   // Função responsável por navegar de volta para página anterior
   function navigateBack() {
@@ -21,15 +27,17 @@ export default function Detail() {
   // Enviar e-mail direto do App
   function sendMail() {
     MailComposer.composeAsync({
-      subject: "Herói o caso: Cadelinha atropelada",
-      recipients: ["murilo.sant@hotmail.com"],
+      subject: `Herói o caso: ${incident.title}`,
+      recipients: [incident.email],
       body: message
     });
   }
 
   // Enviar mensagem no WhatsApp
   function sendWhatsapp() {
-    Linking.openURL(`whatsapp://send?phone=+5515998426771&text=${message}`);
+    Linking.openURL(
+      `whatsapp://send?phone=+55${incident.whatsapp}&text=${message}`
+    );
   }
 
   return (
@@ -47,13 +55,18 @@ export default function Detail() {
       <View style={styles.incident}>
         {/* Array para passar dois objetos de estilos */}
         <Text style={[styles.incidentProperty, { marginTop: 0 }]}>ONG:</Text>
-        <Text style={styles.incidentValue}>APAD</Text>
+        <Text style={styles.incidentValue}>
+          {incident.name} de {incident.city}/{incident.uf}
+        </Text>
 
         <Text style={styles.incidentProperty}>CASO:</Text>
-        <Text style={styles.incidentValue}>Cadelinha atropelada</Text>
+        <Text style={styles.incidentValue}>{incident.title}</Text>
+
+        <Text style={styles.incidentProperty}>DESCRIÇÃO:</Text>
+        <Text style={styles.incidentValue}>{incident.description}</Text>
 
         <Text style={styles.incidentProperty}>VALOR:</Text>
-        <Text style={styles.incidentValue}>R$ 120,00</Text>
+        <Text style={styles.incidentValue}>{formattedValue}</Text>
       </View>
 
       {/* CONTACT BOX */}
