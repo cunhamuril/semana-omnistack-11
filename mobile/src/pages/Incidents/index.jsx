@@ -11,6 +11,8 @@ import styles from "./styles";
 export default function Incidents() {
   const [incidents, setIncidents] = useState([]);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -25,9 +27,25 @@ export default function Incidents() {
   }
 
   async function loadIncidents() {
-    const res = await api.get("/incidents");
-    setIncidents(res.data);
+    // Evitar que faça outra requisição se uma requisição já estiver sendo feita
+    if (loading) {
+      return;
+    }
+
+    // Não buscar mais informações se já buscou todas
+    if (total > 0 && incidents.length === total) {
+      return;
+    }
+
+    setLoading(true);
+
+    const res = await api.get("/incidents", {
+      params: { page }
+    });
+    setIncidents([...incidents, ...res.data]);
     setTotal(res.headers["x-total-count"]);
+    setPage(page + 1);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -56,6 +74,8 @@ export default function Incidents() {
         style={styles.incidentList}
         keyExtractor={incident => String(incident.id)}
         showsVerticalScrollIndicator={false}
+        onEndReached={loadIncidents} // Disparar de forma automática quando o usuário chegar no final da lista
+        onEndReachedThreshold={0.2} // Quantos porcento antes do final precisa ser executada a função
         renderItem={({ item: incident }) => (
           <View style={styles.incident}>
             <Text style={styles.incidentProperty}>ONG:</Text>
