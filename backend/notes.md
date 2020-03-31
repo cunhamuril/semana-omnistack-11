@@ -61,3 +61,18 @@
        <sup>Dica: NPX: executar; NPM: instalar</sup><br/>
        <sup>Dica²: Pode utilizar tanto npx como yarn</sup><br/>
        <sup>Dica³: executar "yarn knex" para listar seus comandos</sup><br/>
+
+</br>
+
+- **Configurações Jest (TDD)**
+
+  - **Iniciar**: `yarn jest --init`
+
+    - Respostas para as perguntas
+      1. yes
+      2. node
+      3. no
+      4. yes
+
+  - **Realizando testes**
+    - Após configurar e escrever teste, executar: `yarn test`
