@@ -75,4 +75,8 @@
       4. yes
 
   - **Realizando testes**
+
     - Após configurar e escrever teste, executar: `yarn test`
+
+  - **Para testes de integração**
+    - Lib supertest: requisições HTTP

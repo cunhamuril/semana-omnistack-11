@@ -19,5 +19,4 @@ app.use(express.json()); // Utilizar requisições no formato JSON
 app.use(routes);
 app.use(errors()); // Tratar erros de validações
 
-const port = 3333;
-app.listen(port, () => console.log(`Backend running on port ${port} :)`));
+module.exports = app;
